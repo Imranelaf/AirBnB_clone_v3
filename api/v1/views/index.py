@@ -1,13 +1,18 @@
-#!/usr/bin/python3xx
-'''api status'''
-import models
-from models import storage
-from models.base_model import BaseModel
+#!/usr/bin/python3
+'''
+API status
+'''
+
+
 from flask import jsonify
 from api.v1.views import app_views
+from models import storage
 
 
-@app_views.route('/status', strict_slashes=False)
-def returnstuff():
-    '''return stuff'''
-    return jsonify(status='OK')
+@app_views.route('/status', methods=['GET'])
+def api_status():
+    '''
+    Returns a JSON response for RESTful API health.
+    '''
+    response = {'status': 'OK'}
+    return jsonify(response)
