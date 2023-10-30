@@ -1,10 +1,5 @@
 #!/usr/bin/python3
 """
-Flask
-"""
-
-#!/usr/bin/python3
-"""
 views
 """
 
