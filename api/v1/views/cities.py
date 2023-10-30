@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-route for handling State objects and operations
+route for handling State
 """
 from flask import jsonify, abort, request
 from api.v1.views import app_views, storage
@@ -30,6 +30,8 @@ def city_by_state(state_id):
 def city_create(state_id):
     """
     create city route
+    param: state_id - state id
+    :return: newly created city obj
     """
     city_json = request.get_json(silent=True)
     if city_json is None:
@@ -89,6 +91,7 @@ def city_put(city_id):
 def city_delete_by_id(city_id):
     """
     deletes City by id
+
     """
 
     city = storage.get("City", str(city_id))
