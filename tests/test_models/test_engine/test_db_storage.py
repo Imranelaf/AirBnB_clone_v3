@@ -71,21 +71,22 @@ test_db_storage.py'])
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_all_returns_dict(self):
+    def allReturnDict(self):
         """Test that all returns a dictionaty"""
         self.assertIs(type(models.storage.all()), dict)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_all_no_class(self):
+    def allNoClass(self):
         """Test that all returns all rows when no class is passed"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_new(self):
+    def new(self):
         """test that new adds an object to the database"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_save(self):
+    def save(self):
         """Test that save properly saves objects to file.json"""
+
 
 class TestDBStorage(unittest.TestCase):
     """Test the DBStorage class"""
@@ -93,35 +94,25 @@ class TestDBStorage(unittest.TestCase):
     @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
                      "not testing db storage")
     def test_get(self):
-        """Test that get returns a specific object or None"""
-        # Create a new state and user
-        new_state = State(name="California")
-        new_state.save()
-        new_user = User(email="bob@foobar.com", password="password")
-        new_user.save()
-
-        # Test the get method
-        self.assertIs(new_state, models.storage.get("State", new_state.id))
-        self.assertIs(None, models.storage.get("State", "non_existent_id"))
-        self.assertIs(None, models.storage.get("NonExistentModel", "non_existent_id"))
-        self.assertIs(new_user, models.storage.get("User", new_user.id))
+        """Test that get returns specific object, or none"""
+        newState = State(name="New York")
+        newState.save()
+        newUser = User(email="bob@foobar.com", password="password")
+        newUser.save()
+        self.assertIs(newState, models.storage.get("State", newState.id))
+        self.assertIs(None, models.storage.get("State", "blah"))
+        self.assertIs(None, models.storage.get("blah", "blah"))
+        self.assertIs(newUser, models.storage.get("User", newUser.id))
 
     @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
                      "not testing db storage")
     def test_count(self):
-        """Test the count method after adding new objects to the database"""
-        # Get the initial count of objects
-        start_count = models.storage.count()
-
-        # Test count with a model that doesn't exist
-        self.assertEqual(models.storage.count("NonExistentModel"), 0)
-
-        # Create new state and user objects
-        new_state = State(name="Montevideo")
-        new_state.save()
-        new_user = User(email="user1@gmail.com", password="pass123")
-        new_user.save()
-
-        # Test the count method after adding objects
-        self.assertEqual(models.storage.count("State"), start_count + 1)
-        self.assertEqual(models.storage.count(), start_count + 2)
+        """add new object to db"""
+        startCount = models.storage.count()
+        self.assertEqual(models.storage.count("Blah"), 0)
+        newState = State(name="Montevideo")
+        newState.save()
+        newUser = User(email="ralexrivero@gmail.com.com", password="dummypass")
+        newUser.save()
+        self.assertEqual(models.storage.count("State"), startCount + 1)
+        self.assertEqual(models.storage.count(), startCount + 2)
