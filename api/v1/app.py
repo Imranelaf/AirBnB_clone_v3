@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+<<<<<<< HEAD
 """app"""
 from flask import Flask, make_response, jsonify
 from models import storage
@@ -12,10 +13,29 @@ cors = CORS(app, resources={r"/api/*": {"origins": "0.0.0.0"}})
 
 
 app.url_map.strict_slashes = False
+=======
+"""
+app
+"""
+
+from flask import Flask, jsonify
+from flask_cors import CORS
+from os import getenv
+
+from api.v1.views import app_views
+from models import storage
+
+
+app = Flask(__name__)
+
+CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
+
+>>>>>>> fc0d1f829812e06cdc55ac1cb92bc5a2a6003f08
 app.register_blueprint(app_views)
 
 
 @app.teardown_appcontext
+<<<<<<< HEAD
 def tear(self):
     ''' closes storage engine '''
     storage.close()
@@ -36,3 +56,14 @@ if __name__ == '__main__':
     else:
         HBNB_API_PORT = int(getenv("HBNB_API_PORT"))
     app.run(host=HBNB_API_HOST, port=HBNB_API_PORT, threaded=True)
+=======
+def teardown(exception):
+    """
+    teardown function
+    """
+    storage.close()
+
+
+if __name__ == "__main__":
+    app.run(getenv("HBNB_API_HOST"), getenv("HBNB_API_PORT"))
+>>>>>>> fc0d1f829812e06cdc55ac1cb92bc5a2a6003f08
