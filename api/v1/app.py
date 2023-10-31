@@ -1,69 +1,42 @@
 #!/usr/bin/python3
-<<<<<<< HEAD
-"""app"""
-from flask import Flask, make_response, jsonify
-from models import storage
-from api.v1.views import app_views
+'''
+Createw Flask app; and register the blueprint app_views to Flask instance app.
+'''
+
 from os import getenv
-from flask_cors import CORS
-
-
-app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "0.0.0.0"}})
-
-
-app.url_map.strict_slashes = False
-=======
-"""
-app
-"""
-
 from flask import Flask, jsonify
 from flask_cors import CORS
-from os import getenv
-
-from api.v1.views import app_views
 from models import storage
-
+from api.v1.views import app_views
 
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
+# enable CORS and allow for origins:
+CORS(app, resources={r'/api/v1/*': {'origins': '0.0.0.0'}})
 
->>>>>>> fc0d1f829812e06cdc55ac1cb92bc5a2a6003f08
 app.register_blueprint(app_views)
+app.url_map.strict_slashes = False
 
 
 @app.teardown_appcontext
-<<<<<<< HEAD
-def tear(self):
-    ''' closes storage engine '''
+def teardown_engine(exception):
+    '''
+    Removes the current SQLAlchemy Session object after each request.
+    '''
     storage.close()
 
 
+# Error handlers for expected app behavior:
 @app.errorhandler(404)
 def not_found(error):
-    ''' handles 404 error and gives json formatted response '''
-    return make_response(jsonify({'error': 'Not found'}), 404)
+    '''
+    Return errmsg `Not Found`.
+    '''
+    response = {'error': 'Not found'}
+    return jsonify(response), 404
+
 
 if __name__ == '__main__':
-    if getenv("HBNB_API_HOST") is None:
-        HBNB_API_HOST = '0.0.0.0'
-    else:
-        HBNB_API_HOST = getenv("HBNB_API_HOST")
-    if getenv("HBNB_API_PORT") is None:
-        HBNB_API_PORT = 5000
-    else:
-        HBNB_API_PORT = int(getenv("HBNB_API_PORT"))
-    app.run(host=HBNB_API_HOST, port=HBNB_API_PORT, threaded=True)
-=======
-def teardown(exception):
-    """
-    teardown function
-    """
-    storage.close()
-
-
-if __name__ == "__main__":
-    app.run(getenv("HBNB_API_HOST"), getenv("HBNB_API_PORT"))
->>>>>>> fc0d1f829812e06cdc55ac1cb92bc5a2a6003f08
+    HOST = getenv('HBNB_API_HOST', '0.0.0.0')
+    PORT = int(getenv('HBNB_API_PORT', 5000))
+    app.run(host=HOST, port=PORT, threaded=True)
